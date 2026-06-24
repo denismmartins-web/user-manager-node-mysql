@@ -1,149 +1,410 @@
-
+/* Reset básico para controlar melhor largura, altura e espaçamentos */
 * {
   box-sizing: border-box;
 }
 
+/* Configuração geral da página */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f2f4f8;
-  color: #222;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #e5e7eb;
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.35), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(124, 58, 237, 0.30), transparent 35%),
+    linear-gradient(135deg, #020617, #0f172a 55%, #111827);
 }
 
+/* Área principal que centraliza o conteúdo */
 .container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 40px 20px;
+  padding: 42px 18px;
 }
 
+/* Card principal das páginas */
 .card {
   width: 100%;
-  max-width: 500px;
-  background: #ffffff;
-  padding: 28px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  max-width: 540px;
+  padding: 32px;
+  border-radius: 22px;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(12px);
 }
 
+/* Card maior usado na área administrativa */
 .card-grande {
-  max-width: 900px;
+  max-width: 980px;
 }
 
+/* Títulos */
 h1,
 h2,
 h3 {
   margin-top: 0;
+  color: #ffffff;
 }
 
+h1 {
+  font-size: 34px;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+h2 {
+  font-size: 23px;
+  margin-bottom: 18px;
+}
+
+h3 {
+  font-size: 21px;
+  margin-bottom: 8px;
+}
+
+/* Parágrafos */
+p {
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+/* Descrição abaixo dos títulos */
+.descricao {
+  margin-bottom: 24px;
+  color: #94a3b8;
+}
+
+/* Menu da página inicial */
 .menu {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 24px;
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
 }
 
+/* Links principais */
 .menu a,
 .link-voltar {
   display: inline-block;
   text-decoration: none;
-  background: #1f6feb;
-  color: #ffffff;
-  padding: 12px 16px;
-  border-radius: 8px;
   text-align: center;
-  margin-top: 14px;
+  padding: 13px 18px;
+  border-radius: 13px;
+  color: #ffffff;
+  font-weight: bold;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+  transition: 0.2s ease;
 }
 
+.menu a:hover,
+.link-voltar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(124, 58, 237, 0.35);
+}
+
+/* Formulários */
 form {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+/* Labels dos formulários */
 label {
-  font-weight: bold;
   margin-top: 8px;
+  font-weight: bold;
+  color: #dbeafe;
 }
 
+/* Inputs e selects */
 input,
 select {
-  padding: 12px;
-  border: 1px solid #ccd0d5;
-  border-radius: 8px;
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.38);
+  border-radius: 12px;
   font-size: 15px;
+  color: #e5e7eb;
+  background: rgba(15, 23, 42, 0.95);
+  outline: none;
 }
 
+/* Placeholder dos inputs */
+input::placeholder {
+  color: #64748b;
+}
+
+/* Efeito ao clicar em campos */
+input:focus,
+select:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.22);
+}
+
+/* Botões gerais */
 button {
   margin-top: 14px;
-  padding: 12px;
+  padding: 13px 17px;
   border: none;
-  border-radius: 8px;
-  background: #1f6feb;
-  color: white;
+  border-radius: 12px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
   cursor: pointer;
   font-size: 15px;
-}
-
-button:hover,
-.menu a:hover,
-.link-voltar:hover {
-  opacity: 0.9;
-}
-
-.botao-secundario {
-  background: #666;
-}
-
-.botao-perigo {
-  background: #d93025;
-}
-
-.mensagem {
-  margin-top: 16px;
   font-weight: bold;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
+}
+
+/* Botão secundário */
+.botao-secundario {
+  background: linear-gradient(135deg, #475569, #334155);
+}
+
+.botao-secundario:hover {
+  box-shadow: 0 12px 22px rgba(71, 85, 105, 0.35);
+}
+
+/* Botão de perigo/exclusão */
+.botao-perigo {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+}
+
+.botao-perigo:hover {
+  box-shadow: 0 12px 22px rgba(220, 38, 38, 0.35);
+}
+
+/* Mensagens de aviso, sucesso ou erro */
+.mensagem {
+  margin-top: 18px;
+  font-weight: bold;
+  color: #cbd5e1;
 }
 
 .sucesso {
-  color: #137333;
+  color: #4ade80;
 }
 
 .erro {
-  color: #d93025;
+  color: #f87171;
 }
 
+/* Bloco de resumo da área administrativa */
+.resumo-admin {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.resumo-admin p {
+  margin: 0;
+  padding: 16px;
+  border-radius: 16px;
+  color: #dbeafe;
+  background: rgba(30, 64, 175, 0.28);
+  border: 1px solid rgba(96, 165, 250, 0.28);
+}
+
+.resumo-admin strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 28px;
+  color: #ffffff;
+}
+
+/* Área dos filtros da listagem */
+.filtros-admin {
+  display: grid;
+  grid-template-columns: 1fr 220px auto;
+  gap: 14px;
+  align-items: end;
+  margin: 22px 0;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+/* Cada campo de filtro */
+.campo-filtro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Ajuste do botão dentro da área de filtro */
+.filtros-admin button {
+  height: 47px;
+  margin-top: 0;
+}
+
+/* Área de edição */
+.area-edicao {
+  margin-top: 24px;
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(30, 41, 59, 0.86);
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+/* Classe usada para esconder elementos */
+.escondido {
+  display: none;
+}
+
+/* Lista de usuários */
 .lista-usuarios {
   display: grid;
-  gap: 16px;
+  gap: 18px;
   margin-top: 24px;
 }
 
+/* Card individual do usuário */
 .usuario-card {
-  border: 1px solid #d8dee4;
-  border-radius: 10px;
-  padding: 16px;
-  background: #f8fafc;
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.24);
+  transition: 0.2s ease;
 }
 
+/* Efeito decorativo no card */
+.usuario-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 5px;
+  background: linear-gradient(180deg, #2563eb, #7c3aed);
+}
+
+/* Efeito hover no card */
+.usuario-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(96, 165, 250, 0.55);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.32);
+}
+
+/* Parágrafos dentro do card */
 .usuario-card p {
-  margin: 6px 0;
+  margin: 8px 0;
+  color: #cbd5e1;
 }
 
+/* Topo do card com apelido e ID */
+.usuario-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+/* Título do card */
+.usuario-topo h3 {
+  margin-bottom: 8px;
+}
+
+/* ID do usuário */
+.usuario-id {
+  white-space: nowrap;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: bold;
+  color: #c4b5fd;
+  background: rgba(124, 58, 237, 0.16);
+  border: 1px solid rgba(167, 139, 250, 0.26);
+}
+
+/* Badge do tipo de usuário */
+.badge-tipo {
+  display: inline-block;
+  padding: 5px 11px;
+  border-radius: 999px;
+  color: #bfdbfe;
+  background: rgba(37, 99, 235, 0.20);
+  border: 1px solid rgba(96, 165, 250, 0.30);
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* Área dos botões do card */
 .acoes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 17px;
+}
+
+/* Remove margem extra dos botões dentro das ações */
+.acoes button {
+  margin-top: 0;
+}
+
+/* Botões do formulário de edição */
+.acoes-form {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.area-edicao {
-  margin-top: 24px;
-  padding: 18px;
-  border: 1px solid #ccd0d5;
-  border-radius: 10px;
-  background: #f8fafc;
+/* Responsividade para tablets */
+@media (max-width: 800px) {
+  .resumo-admin {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros-admin {
+    grid-template-columns: 1fr;
+  }
+
+  .filtros-admin button {
+    width: 100%;
+  }
 }
 
-.escondido {
-  display: none;
+/* Responsividade para celular */
+@media (max-width: 600px) {
+  .container {
+    padding: 24px 12px;
+  }
+
+  .card {
+    padding: 23px;
+    border-radius: 18px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .usuario-topo {
+    flex-direction: column;
+  }
+
+  .usuario-id {
+    white-space: normal;
+  }
+
+  .acoes,
+  .acoes-form {
+    flex-direction: column;
+  }
+
+  .acoes button,
+  .acoes-form button {
+    width: 100%;
+  }
 }
