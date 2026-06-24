@@ -14,9 +14,45 @@
     <section class="card card-grande">
       <h1>Área Administrativa</h1>
 
-      <p>
-        Aqui vamos listar, editar e excluir usuários cadastrados.
+      <p class="descricao">
+        Aqui você pode visualizar, buscar, filtrar, editar e excluir usuários cadastrados.
       </p>
+
+      <section class="resumo-admin">
+        <p>
+          Total de usuários cadastrados:
+          <strong id="total-usuarios">0</strong>
+        </p>
+
+        <p>
+          Usuários visíveis na tela:
+          <strong id="total-visivel">0</strong>
+        </p>
+      </section>
+
+      <section class="filtros-admin">
+        <div class="campo-filtro">
+          <label for="busca-usuario">Buscar usuário</label>
+          <input
+            type="text"
+            id="busca-usuario"
+            placeholder="Buscar por nome, apelido ou e-mail"
+          >
+        </div>
+
+        <div class="campo-filtro">
+          <label for="filtro-tipo">Filtrar por tipo</label>
+          <select id="filtro-tipo">
+            <option value="todos">Todos</option>
+            <option value="usuario">Usuário</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <button type="button" id="btn-recarregar" class="botao-secundario">
+          Recarregar lista
+        </button>
+      </section>
 
       <section id="area-edicao" class="area-edicao escondido">
         <h2>Editar usuário</h2>
@@ -42,10 +78,13 @@
             <option value="admin">Admin</option>
           </select>
 
-          <button type="submit">Salvar edição</button>
-          <button type="button" id="btn-cancelar-edicao" class="botao-secundario">
-            Cancelar
-          </button>
+          <div class="acoes-form">
+            <button type="submit">Salvar edição</button>
+
+            <button type="button" id="btn-cancelar-edicao" class="botao-secundario">
+              Cancelar
+            </button>
+          </div>
         </form>
       </section>
 
