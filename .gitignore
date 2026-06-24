@@ -1,0 +1,9 @@
+# Dependências do Node.js
+backend/node_modules/
+
+# Arquivo com senha/configurações locais
+backend/.env
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
