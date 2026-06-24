@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cadastro de Usuário</title>
+
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <h1>Cadastro de Usuário</h1>
+
+      <form id="form-cadastro">
+        <label for="nome_completo">Nome completo</label>
+        <input type="text" id="nome_completo" required>
+
+        <label for="apelido">Apelido</label>
+        <input type="text" id="apelido" required>
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" required>
+
+        <label for="celular">Celular</label>
+        <input type="text" id="celular">
+
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" required>
+
+        <button type="submit">Cadastrar</button>
+      </form>
+
+      <p id="mensagem" class="mensagem"></p>
+
+      <a class="link-voltar" href="./index.html">Voltar para início</a>
+    </section>
+  </main>
+
+  <script src="./js/cadastro.js"></script>
+</body>
+</html>
