@@ -8,7 +8,14 @@ Projeto de estudo para praticar desenvolvimento full stack com:
 - Node.js
 - Express
 - MySQL
+'''''
 
+ ## Banco de dados
+
+O script de criação do banco está em:
+```txt
+ Database/schema.sql
+```
 ## Objetivo
 
 Criar um sistema CRUD de usuários, entendendo o caminho completo dos dados:
