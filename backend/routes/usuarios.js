@@ -53,7 +53,13 @@ router.get("/", async (req, res) => {
 */
 router.post("/", async (req, res) => {
   try {
-    const { nome_completo, apelido, email, celular, senha } = req.body;
+    let { nome_completo, apelido, email, celular, senha } = req.body;
+
+    // Remove espaços extras do começo e do final dos textos.
+    nome_completo = nome_completo ? nome_completo.trim() : "";
+    apelido = apelido ? apelido.trim() : "";
+    email = email ? email.trim().toLowerCase() : "";
+    celular = celular ? celular.trim() : "";
 
     // Validação simples para impedir cadastro incompleto.
     if (!nome_completo || !apelido || !email || !senha) {
@@ -106,15 +112,64 @@ router.post("/", async (req, res) => {
 
   Objetivo:
   Atualizar dados de um usuário existente.
+
+  Nesta etapa estamos fortalecendo a edição:
+  - valida ID
+  - valida campos obrigatórios
+  - limpa espaços extras
+  - valida tipo de usuário
+  - impede e-mail duplicado
 */
 router.put("/:id", async (req, res) => {
   try {
+    // Pega o ID enviado pela URL.
     const { id } = req.params;
-    const { nome_completo, apelido, email, celular, tipo_usuario } = req.body;
 
+    // Converte o ID para número.
+    const idUsuario = Number(id);
+
+    // Se o ID não for um número válido, retorna erro.
+    if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
+      return res.status(400).json({
+        mensagem: "ID de usuário inválido.",
+      });
+    }
+
+    // Pega os dados enviados pelo frontend.
+    let { nome_completo, apelido, email, celular, tipo_usuario } = req.body;
+
+    // Remove espaços extras do começo e do final dos textos.
+    nome_completo = nome_completo ? nome_completo.trim() : "";
+    apelido = apelido ? apelido.trim() : "";
+    email = email ? email.trim().toLowerCase() : "";
+    celular = celular ? celular.trim() : "";
+    tipo_usuario = tipo_usuario ? tipo_usuario.trim() : "usuario";
+
+    // Valida campos obrigatórios.
     if (!nome_completo || !apelido || !email) {
       return res.status(400).json({
         mensagem: "Nome, apelido e e-mail são obrigatórios.",
+      });
+    }
+
+    // Valida se o tipo de usuário é permitido.
+    const tiposPermitidos = ["usuario", "admin"];
+
+    if (!tiposPermitidos.includes(tipo_usuario)) {
+      return res.status(400).json({
+        mensagem: "Tipo de usuário inválido.",
+      });
+    }
+
+    // Verifica se o usuário existe antes de tentar atualizar.
+    const [usuarioEncontrado] = await pool.query(
+      "SELECT id_usuario FROM usuarios WHERE id_usuario = ?",
+      [idUsuario]
+    );
+
+    if (usuarioEncontrado.length === 0) {
+      return res.status(404).json({
+        mensagem: "Usuário não encontrado.",
       });
     }
 
@@ -125,7 +180,7 @@ router.put("/:id", async (req, res) => {
       FROM usuarios 
       WHERE email = ? AND id_usuario != ?
       `,
-      [email, id]
+      [email, idUsuario]
     );
 
     if (emailExistente.length > 0) {
@@ -134,7 +189,8 @@ router.put("/:id", async (req, res) => {
       });
     }
 
-    const [resultado] = await pool.query(
+    // Atualiza o usuário no banco.
+    await pool.query(
       `
       UPDATE usuarios
       SET 
@@ -145,14 +201,8 @@ router.put("/:id", async (req, res) => {
         tipo_usuario = ?
       WHERE id_usuario = ?
       `,
-      [nome_completo, apelido, email, celular, tipo_usuario, id]
+      [nome_completo, apelido, email, celular, tipo_usuario, idUsuario]
     );
-
-    if (resultado.affectedRows === 0) {
-      return res.status(404).json({
-        mensagem: "Usuário não encontrado.",
-      });
-    }
 
     res.json({
       mensagem: "Usuário atualizado com sucesso!",
@@ -176,9 +226,17 @@ router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
+    const idUsuario = Number(id);
+
+    if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
+      return res.status(400).json({
+        mensagem: "ID de usuário inválido.",
+      });
+    }
+
     const [resultado] = await pool.query(
       "DELETE FROM usuarios WHERE id_usuario = ?",
-      [id]
+      [idUsuario]
     );
 
     if (resultado.affectedRows === 0) {
