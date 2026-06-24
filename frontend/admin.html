@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin - Usuários</title>
+
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <main class="container">
+    <section class="card card-grande">
+      <h1>Área Administrativa</h1>
+
+      <p>
+        Aqui vamos listar, editar e excluir usuários cadastrados.
+      </p>
+
+      <section id="area-edicao" class="area-edicao escondido">
+        <h2>Editar usuário</h2>
+
+        <form id="form-edicao">
+          <input type="hidden" id="editar_id">
+
+          <label for="editar_nome">Nome completo</label>
+          <input type="text" id="editar_nome" required>
+
+          <label for="editar_apelido">Apelido</label>
+          <input type="text" id="editar_apelido" required>
+
+          <label for="editar_email">E-mail</label>
+          <input type="email" id="editar_email" required>
+
+          <label for="editar_celular">Celular</label>
+          <input type="text" id="editar_celular">
+
+          <label for="editar_tipo">Tipo de usuário</label>
+          <select id="editar_tipo">
+            <option value="usuario">Usuário</option>
+            <option value="admin">Admin</option>
+          </select>
+
+          <button type="submit">Salvar edição</button>
+          <button type="button" id="btn-cancelar-edicao" class="botao-secundario">
+            Cancelar
+          </button>
+        </form>
+      </section>
+
+      <p id="mensagem" class="mensagem"></p>
+
+      <section id="lista-usuarios" class="lista-usuarios">
+        <p>Carregando usuários...</p>
+      </section>
+
+      <a class="link-voltar" href="./index.html">Voltar para início</a>
+    </section>
+  </main>
+
+  <script src="./js/admin.js"></script>
+</body>
+</html>
