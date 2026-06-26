@@ -1,4 +1,3 @@
-
 // Importa o Express, que será usado para criar o servidor.
 const express = require("express");
 
@@ -13,6 +12,9 @@ require("dotenv").config();
 
 // Importa as rotas de usuários.
 const usuariosRoutes = require("./routes/usuarios");
+
+// Importa as rotas de autenticação/login.
+const authRoutes = require("./routes/auth");
 
 // Cria a aplicação Express.
 const app = express();
@@ -39,8 +41,10 @@ app.get("/api", (req, res) => {
 });
 
 // Conecta as rotas de usuários no caminho /api/usuarios.
-// Exemplo final: GET http://localhost:3000/api/usuarios
 app.use("/api/usuarios", usuariosRoutes);
+
+// Conecta as rotas de autenticação no caminho /api/auth.
+app.use("/api/auth", authRoutes);
 
 // Rota principal do site.
 // Quando acessar http://localhost:3000, abre o index.html.
