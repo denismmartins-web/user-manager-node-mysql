@@ -408,3 +408,11 @@ button:hover {
     width: 100%;
   }
 }
+
+.painel-usuario {
+  margin-top: 22px;
+}
+
+#btn-sair {
+  width: 100%;
+}
