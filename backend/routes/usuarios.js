@@ -222,31 +222,64 @@ router.put("/:id", async (req, res) => {
   Objetivo:
   Excluir um usuário do banco.
 */
+/*
+  ROTA DELETE /api/usuarios/:id
+
+  Objetivo:
+  Excluir um usuário do banco.
+
+  Melhorias desta etapa:
+  - valida se o ID é um número válido
+  - verifica se o usuário existe antes de excluir
+  - retorna uma mensagem mais clara
+*/
 router.delete("/:id", async (req, res) => {
   try {
+    // Pega o ID enviado pela URL.
     const { id } = req.params;
 
+    // Converte o ID para número.
     const idUsuario = Number(id);
 
+    // Valida se o ID é um número inteiro positivo.
     if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
       return res.status(400).json({
         mensagem: "ID de usuário inválido.",
       });
     }
 
-    const [resultado] = await pool.query(
-      "DELETE FROM usuarios WHERE id_usuario = ?",
+    // Verifica se o usuário existe antes de excluir.
+    const [usuariosEncontrados] = await pool.query(
+      `
+      SELECT 
+        id_usuario,
+        apelido,
+        email
+      FROM usuarios
+      WHERE id_usuario = ?
+      `,
       [idUsuario]
     );
 
-    if (resultado.affectedRows === 0) {
+    // Se não encontrar usuário, retorna erro 404.
+    if (usuariosEncontrados.length === 0) {
       return res.status(404).json({
         mensagem: "Usuário não encontrado.",
       });
     }
 
+    // Guarda o usuário encontrado para usar na mensagem final.
+    const usuario = usuariosEncontrados[0];
+
+    // Exclui o usuário do banco.
+    await pool.query(
+      "DELETE FROM usuarios WHERE id_usuario = ?",
+      [idUsuario]
+    );
+
+    // Retorna mensagem de sucesso.
     res.json({
-      mensagem: "Usuário excluído com sucesso!",
+      mensagem: `Usuário "${usuario.apelido}" excluído com sucesso!`,
     });
   } catch (erro) {
     console.error("Erro ao excluir usuário:", erro);
