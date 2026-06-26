@@ -304,13 +304,40 @@ btnCancelarEdicao.addEventListener("click", () => {
 
 /*
   Função responsável por excluir um usuário.
+
+  Melhorias desta etapa:
+  - mostra nome, apelido e e-mail na confirmação
+  - evita exclusão acidental
+  - fecha o formulário de edição se o usuário excluído estiver sendo editado
+  - recarrega a lista após excluir
 */
 async function excluirUsuario(idUsuario) {
-  // Pede confirmação antes de excluir.
-  const confirmar = confirm("Tem certeza que deseja excluir este usuário?");
+  // Procura o usuário na lista carregada.
+  const usuario = usuariosCarregados.find(
+    (item) => item.id_usuario === idUsuario
+  );
 
-  // Se o usuário cancelar, a função para aqui.
+  // Caso não encontre o usuário na lista, mostra erro.
+  if (!usuario) {
+    mensagem.textContent = "Usuário não encontrado para exclusão.";
+    mensagem.className = "mensagem erro";
+    return;
+  }
+
+  // Monta uma mensagem de confirmação mais clara.
+  const confirmar = confirm(
+    `Tem certeza que deseja excluir este usuário?\n\n` +
+    `ID: ${usuario.id_usuario}\n` +
+    `Apelido: ${usuario.apelido}\n` +
+    `Nome: ${usuario.nome_completo}\n` +
+    `E-mail: ${usuario.email}\n\n` +
+    `Essa ação não pode ser desfeita.`
+  );
+
+  // Se o usuário cancelar, paramos a função aqui.
   if (!confirmar) {
+    mensagem.textContent = "Exclusão cancelada.";
+    mensagem.className = "mensagem";
     return;
   }
 
@@ -323,11 +350,22 @@ async function excluirUsuario(idUsuario) {
     // Converte a resposta em JSON.
     const dados = await resposta.json();
 
-    // Se houver erro, mostra a mensagem.
+    // Se houver erro, mostra a mensagem retornada pelo backend.
     if (!resposta.ok) {
       mensagem.textContent = dados.mensagem;
       mensagem.className = "mensagem erro";
       return;
+    }
+
+    // Verifica se o usuário excluído estava aberto no formulário de edição.
+    const idEmEdicao = document.getElementById("editar_id").value;
+
+    if (Number(idEmEdicao) === idUsuario) {
+      // Esconde a área de edição.
+      areaEdicao.classList.add("escondido");
+
+      // Limpa o formulário de edição.
+      formEdicao.reset();
     }
 
     // Mostra mensagem de sucesso.
