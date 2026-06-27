@@ -416,3 +416,18 @@ button:hover {
 #btn-sair {
   width: 100%;
 }
+
+.status-sessao {
+  margin: 22px 0;
+  padding: 14px 16px;
+  border-radius: 14px;
+  color: #bfdbfe;
+  background: rgba(37, 99, 235, 0.18);
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  font-weight: bold;
+}
+
+/* Força qualquer elemento com a classe escondido a sumir da tela */
+.escondido {
+  display: none !important;
+}

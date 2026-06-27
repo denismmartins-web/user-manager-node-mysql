@@ -1,3 +1,6 @@
+// Protege a área administrativa contra acesso de usuários comuns.
+protegerPaginaAdmin();
+
 // Captura a área onde a lista de usuários será exibida.
 const listaUsuarios = document.getElementById("lista-usuarios");
 
