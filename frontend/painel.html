@@ -1,38 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Painel - User Manager</title>
+  <title>Painel - User Manager</title>
 
-    <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/style.css">
 </head>
-
 <body>
-    <main class="container">
-        <section class="card">
-            <h1>Painel do Usuário</h1>
+  <main class="container">
+    <section class="card card-grande">
+      <h1>Painel do Usuário</h1>
 
-            <p class="descricao">
-                Dados da sessão atual do usuário logado.
-            </p>
+      <p class="descricao">
+        Área do usuário logado para visualizar e atualizar os próprios dados.
+      </p>
 
-            <section id="dados-usuario" class="painel-usuario">
-                <p>Carregando dados do usuário...</p>
-            </section>
+      <section id="boas-vindas" class="status-sessao">
+        Carregando sessão...
+      </section>
 
-            <button type="button" id="btn-sair" class="botao-perigo">
-                Sair
+      <section id="dados-usuario" class="painel-usuario">
+        <p>Carregando dados do usuário...</p>
+      </section>
+
+      <section class="acoes-painel">
+        <button type="button" id="btn-mostrar-edicao">
+          Editar meus dados
+        </button>
+
+        <a id="link-admin-painel" href="./admin.html" class="link-botao escondido">
+          Área administrativa
+        </a>
+
+        <button type="button" id="btn-sair" class="botao-perigo">
+          Sair
+        </button>
+      </section>
+
+      <section id="area-edicao-perfil" class="area-edicao escondido">
+        <h2>Editar meus dados</h2>
+
+        <form id="form-perfil">
+          <label for="perfil_nome">Nome completo</label>
+          <input type="text" id="perfil_nome" required>
+
+          <label for="perfil_apelido">Apelido</label>
+          <input type="text" id="perfil_apelido" required>
+
+          <label for="perfil_email">E-mail</label>
+          <input type="email" id="perfil_email" required>
+
+          <label for="perfil_celular">Celular</label>
+          <input type="text" id="perfil_celular">
+
+          <div class="acoes-form">
+            <button type="submit">Salvar meus dados</button>
+
+            <button type="button" id="btn-cancelar-perfil" class="botao-secundario">
+              Cancelar
             </button>
+          </div>
+        </form>
+      </section>
 
-            <a class="link-voltar" href="./index.html">Voltar para início</a>
-        </section>
-    </main>
-    <script src="./js/auth.js"></script>
-    <script src="./js/painel.js"></script>
+      <p id="mensagem" class="mensagem"></p>
+
+      <a class="link-voltar" href="./index.html">Voltar para início</a>
+    </section>
+  </main>
+
+  <script src="./js/auth.js"></script>
+  <script src="./js/painel.js"></script>
 </body>
-
 </html>
