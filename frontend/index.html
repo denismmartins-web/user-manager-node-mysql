@@ -18,13 +18,24 @@
         Projeto de estudo com HTML, CSS, JavaScript, Node.js, Express e MySQL.
       </p>
 
+      <section id="status-sessao" class="status-sessao">
+        Verificando sessão...
+      </section>
+
       <nav class="menu">
-        <a href="./cadastro.html">Cadastrar usuário</a>
-        <a href="./login.html">Fazer login</a>
-        <a href="./painel.html">Meu painel</a>
-        <a href="./admin.html">Área administrativa</a>
+        <a id="link-cadastro" href="./cadastro.html">Cadastrar usuário</a>
+        <a id="link-login" href="./login.html">Fazer login</a>
+        <a id="link-painel" href="./painel.html" class="escondido">Meu painel</a>
+        <a id="link-admin" href="./admin.html" class="escondido">Área administrativa</a>
+
+        <button type="button" id="btn-sair-home" class="botao-perigo escondido">
+          Sair
+        </button>
       </nav>
     </section>
   </main>
+
+  <script src="./js/auth.js"></script>
+  <script src="./js/index.js"></script>
 </body>
 </html>
