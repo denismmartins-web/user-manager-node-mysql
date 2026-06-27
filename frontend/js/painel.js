@@ -1,3 +1,6 @@
+// Protege o painel contra acesso sem login.
+protegerPaginaLogada();
+
 // Captura a área onde os dados do usuário serão exibidos.
 const dadosUsuario = document.getElementById("dados-usuario");
 
