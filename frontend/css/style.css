@@ -431,3 +431,58 @@ button:hover {
 .escondido {
   display: none !important;
 }
+
+.painel-usuario {
+  margin-top: 24px;
+}
+
+.painel-card {
+  margin-bottom: 18px;
+}
+
+.grade-dados {
+  display: grid;
+  gap: 8px;
+}
+
+.acoes-painel {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.acoes-painel button,
+.acoes-painel .link-botao {
+  flex: 1;
+  min-width: 180px;
+}
+
+.link-botao {
+  display: inline-block;
+  text-decoration: none;
+  text-align: center;
+  padding: 13px 17px;
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: bold;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.25);
+  transition: 0.2s ease;
+}
+
+.link-botao:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(124, 58, 237, 0.35);
+}
+
+@media (max-width: 700px) {
+  .acoes-painel {
+    flex-direction: column;
+  }
+
+  .acoes-painel button,
+  .acoes-painel .link-botao {
+    width: 100%;
+  }
+}
