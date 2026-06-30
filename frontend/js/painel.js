@@ -13,8 +13,14 @@ const mensagem = document.getElementById("mensagem");
 // Captura o botão de mostrar formulário de edição.
 const btnMostrarEdicao = document.getElementById("btn-mostrar-edicao");
 
+// Captura o botão de mostrar formulário de alteração de senha.
+const btnMostrarSenha = document.getElementById("btn-mostrar-senha");
+
 // Captura o botão de cancelar edição do perfil.
 const btnCancelarPerfil = document.getElementById("btn-cancelar-perfil");
+
+// Captura o botão de cancelar alteração de senha.
+const btnCancelarSenha = document.getElementById("btn-cancelar-senha");
 
 // Captura o botão de sair.
 const btnSair = document.getElementById("btn-sair");
@@ -22,8 +28,14 @@ const btnSair = document.getElementById("btn-sair");
 // Captura o formulário de edição do perfil.
 const formPerfil = document.getElementById("form-perfil");
 
+// Captura o formulário de alteração de senha.
+const formSenha = document.getElementById("form-senha");
+
 // Captura a área de edição do perfil.
 const areaEdicaoPerfil = document.getElementById("area-edicao-perfil");
+
+// Captura a área de alteração de senha.
+const areaAlterarSenha = document.getElementById("area-alterar-senha");
 
 // Captura o link para área administrativa.
 const linkAdminPainel = document.getElementById("link-admin-painel");
@@ -43,17 +55,14 @@ if (!usuarioLogado) {
   Função que renderiza os dados do usuário no painel.
 */
 function renderizarPainel() {
-  // Atualiza a mensagem de boas-vindas.
   boasVindas.textContent = `Bem-vindo, ${usuarioLogado.apelido}! Você está logado como ${usuarioLogado.tipo_usuario}.`;
 
-  // Mostra link da área administrativa somente para admin.
   if (usuarioLogado.tipo_usuario === "admin") {
     linkAdminPainel.classList.remove("escondido");
   } else {
     linkAdminPainel.classList.add("escondido");
   }
 
-  // Monta o card principal com os dados do usuário.
   dadosUsuario.innerHTML = `
     <article class="usuario-card painel-card">
       <div class="usuario-topo">
@@ -86,12 +95,13 @@ function preencherFormularioPerfil() {
 }
 
 /*
-  Mostra a área de edição dos próprios dados.
+  Mostra somente o formulário de perfil.
 */
-btnMostrarEdicao.addEventListener("click", () => {
+function mostrarFormularioPerfil() {
   preencherFormularioPerfil();
 
   areaEdicaoPerfil.classList.remove("escondido");
+  areaAlterarSenha.classList.add("escondido");
 
   mensagem.textContent = "Edite seus dados e clique em salvar.";
   mensagem.className = "mensagem";
@@ -100,10 +110,42 @@ btnMostrarEdicao.addEventListener("click", () => {
     behavior: "smooth",
     block: "start",
   });
+}
+
+/*
+  Mostra somente o formulário de alteração de senha.
+*/
+function mostrarFormularioSenha() {
+  formSenha.reset();
+
+  areaAlterarSenha.classList.remove("escondido");
+  areaEdicaoPerfil.classList.add("escondido");
+
+  mensagem.textContent = "Digite sua senha atual e escolha uma nova senha.";
+  mensagem.className = "mensagem";
+
+  areaAlterarSenha.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
+}
+
+/*
+  Botão para abrir edição de perfil.
+*/
+btnMostrarEdicao.addEventListener("click", () => {
+  mostrarFormularioPerfil();
 });
 
 /*
-  Cancela a edição e esconde o formulário.
+  Botão para abrir alteração de senha.
+*/
+btnMostrarSenha.addEventListener("click", () => {
+  mostrarFormularioSenha();
+});
+
+/*
+  Cancela a edição do perfil.
 */
 btnCancelarPerfil.addEventListener("click", () => {
   areaEdicaoPerfil.classList.add("escondido");
@@ -115,11 +157,19 @@ btnCancelarPerfil.addEventListener("click", () => {
 });
 
 /*
-  Envia a atualização dos próprios dados para o backend.
+  Cancela a alteração de senha.
+*/
+btnCancelarSenha.addEventListener("click", () => {
+  areaAlterarSenha.classList.add("escondido");
 
-  Observação:
-  Enviamos tipo_usuario junto para preservar o tipo atual do usuário.
-  Isso evita que um admin vire "usuario" ao editar o próprio perfil.
+  formSenha.reset();
+
+  mensagem.textContent = "Alteração de senha cancelada.";
+  mensagem.className = "mensagem";
+});
+
+/*
+  Envia a atualização dos próprios dados para o backend.
 */
 formPerfil.addEventListener("submit", async (evento) => {
   evento.preventDefault();
@@ -151,7 +201,6 @@ formPerfil.addEventListener("submit", async (evento) => {
       return;
     }
 
-    // Atualiza os dados salvos no navegador.
     usuarioLogado = {
       ...usuarioLogado,
       nome_completo: dadosAtualizados.nome_completo.trim(),
@@ -160,16 +209,12 @@ formPerfil.addEventListener("submit", async (evento) => {
       celular: dadosAtualizados.celular.trim(),
     };
 
-    // Salva novamente no localStorage.
     localStorage.setItem("usuarioLogado", JSON.stringify(usuarioLogado));
 
-    // Atualiza o painel visualmente.
     renderizarPainel();
 
-    // Esconde o formulário.
     areaEdicaoPerfil.classList.add("escondido");
 
-    // Mostra mensagem de sucesso.
     mensagem.textContent = dados.mensagem;
     mensagem.className = "mensagem sucesso";
   } catch (erro) {
@@ -181,9 +226,52 @@ formPerfil.addEventListener("submit", async (evento) => {
 });
 
 /*
-  Evento do botão sair.
+  Envia a alteração de senha para o backend.
+*/
+formSenha.addEventListener("submit", async (evento) => {
+  evento.preventDefault();
 
-  Usa a função sairDoSistema() criada no auth.js.
+  const dadosSenha = {
+    senha_atual: document.getElementById("senha_atual").value,
+    nova_senha: document.getElementById("nova_senha").value,
+    confirmar_senha: document.getElementById("confirmar_senha").value,
+  };
+
+  try {
+    const resposta = await fetch(`/api/usuarios/${usuarioLogado.id_usuario}/senha`, {
+      method: "PUT",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify(dadosSenha),
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+      mensagem.textContent = dados.mensagem;
+      mensagem.className = "mensagem erro";
+      return;
+    }
+
+    formSenha.reset();
+
+    areaAlterarSenha.classList.add("escondido");
+
+    mensagem.textContent = dados.mensagem;
+    mensagem.className = "mensagem sucesso";
+  } catch (erro) {
+    console.error("Erro ao alterar senha:", erro);
+
+    mensagem.textContent = "Erro ao conectar com o servidor.";
+    mensagem.className = "mensagem erro";
+  }
+});
+
+/*
+  Evento do botão sair.
 */
 btnSair.addEventListener("click", () => {
   sairDoSistema();
