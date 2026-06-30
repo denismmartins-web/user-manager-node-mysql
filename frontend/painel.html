@@ -31,6 +31,10 @@
           Editar meus dados
         </button>
 
+        <button type="button" id="btn-mostrar-senha" class="botao-secundario">
+          Alterar senha
+        </button>
+
         <a id="link-admin-painel" href="./admin.html" class="link-botao escondido">
           Área administrativa
         </a>
@@ -60,6 +64,29 @@
             <button type="submit">Salvar meus dados</button>
 
             <button type="button" id="btn-cancelar-perfil" class="botao-secundario">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section id="area-alterar-senha" class="area-edicao escondido">
+        <h2>Alterar senha</h2>
+
+        <form id="form-senha">
+          <label for="senha_atual">Senha atual</label>
+          <input type="password" id="senha_atual" required>
+
+          <label for="nova_senha">Nova senha</label>
+          <input type="password" id="nova_senha" required>
+
+          <label for="confirmar_senha">Confirmar nova senha</label>
+          <input type="password" id="confirmar_senha" required>
+
+          <div class="acoes-form">
+            <button type="submit">Salvar nova senha</button>
+
+            <button type="button" id="btn-cancelar-senha" class="botao-secundario">
               Cancelar
             </button>
           </div>
