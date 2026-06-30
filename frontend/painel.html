@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
 
@@ -10,7 +9,6 @@
 
   <link rel="stylesheet" href="./css/style.css">
 </head>
-
 <body>
   <main class="container">
     <section class="card card-grande">
@@ -74,46 +72,63 @@
 
       <section id="area-alterar-senha" class="area-edicao escondido">
         <h2>Alterar senha</h2>
-        <label for="senha_atual">Senha atual</label>
 
-        <div class="campo-senha">
-          <input type="password" id="senha_atual" required>
+        <form id="form-senha">
+          <label for="senha_atual">Senha atual</label>
 
-          <button type="button" class="btn-toggle-senha" data-toggle-senha="senha_atual"
-            aria-label="Mostrar senha atual" title="Mostrar senha atual">
-            👁️
-          </button>
-        </div>
+          <div class="campo-senha">
+            <input type="password" id="senha_atual" required>
 
-        <label for="nova_senha">Nova senha</label>
+            <button
+              type="button"
+              class="btn-toggle-senha"
+              data-toggle-senha="senha_atual"
+              aria-label="Mostrar senha atual"
+              title="Mostrar senha atual"
+            >
+              👁️
+            </button>
+          </div>
 
-        <div class="campo-senha">
-          <input type="password" id="nova_senha" required>
+          <label for="nova_senha">Nova senha</label>
 
-          <button type="button" class="btn-toggle-senha" data-toggle-senha="nova_senha" aria-label="Mostrar nova senha"
-            title="Mostrar nova senha">
-            👁️
-          </button>
-        </div>
+          <div class="campo-senha">
+            <input type="password" id="nova_senha" required>
 
-        <label for="confirmar_senha">Confirmar nova senha</label>
+            <button
+              type="button"
+              class="btn-toggle-senha"
+              data-toggle-senha="nova_senha"
+              aria-label="Mostrar nova senha"
+              title="Mostrar nova senha"
+            >
+              👁️
+            </button>
+          </div>
 
-        <div class="campo-senha">
-          <input type="password" id="confirmar_senha" required>
+          <label for="confirmar_senha">Confirmar nova senha</label>
 
-          <button type="button" class="btn-toggle-senha" data-toggle-senha="confirmar_senha"
-            aria-label="Mostrar confirmação de senha" title="Mostrar confirmação de senha">
-            👁️
-          </button>
-        </div>
+          <div class="campo-senha">
+            <input type="password" id="confirmar_senha" required>
 
-        <div class="acoes-form">
-          <button type="submit">Salvar nova senha</button>
+            <button
+              type="button"
+              class="btn-toggle-senha"
+              data-toggle-senha="confirmar_senha"
+              aria-label="Mostrar confirmação de senha"
+              title="Mostrar confirmação de senha"
+            >
+              👁️
+            </button>
+          </div>
 
-          <button type="button" id="btn-cancelar-senha" class="botao-secundario">
-            Cancelar
-          </button>
-        </div>
+          <div class="acoes-form">
+            <button type="submit">Salvar nova senha</button>
+
+            <button type="button" id="btn-cancelar-senha" class="botao-secundario">
+              Cancelar
+            </button>
+          </div>
         </form>
       </section>
 
@@ -127,5 +142,4 @@
   <script src="./js/senha-toggle.js"></script>
   <script src="./js/painel.js"></script>
 </body>
-
 </html>
