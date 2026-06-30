@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
 
@@ -9,6 +10,7 @@
 
   <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
   <main class="container">
     <section class="card">
@@ -23,8 +25,15 @@
         <input type="email" id="email" required>
 
         <label for="senha">Senha</label>
-        <input type="password" id="senha" required>
 
+        <div class="campo-senha">
+          <input type="password" id="senha" required>
+
+          <button type="button" class="btn-toggle-senha" data-toggle-senha="senha" aria-label="Mostrar senha"
+            title="Mostrar senha">
+            👁️
+          </button>
+        </div>
         <button type="submit">Entrar</button>
       </form>
 
@@ -33,7 +42,8 @@
       <a class="link-voltar" href="./index.html">Voltar para início</a>
     </section>
   </main>
-
+  <script src="./js/senha-toggle.js"></script>
   <script src="./js/login.js"></script>
 </body>
+
 </html>

@@ -44,11 +44,38 @@ const linkAdminPainel = document.getElementById("link-admin-painel");
 let usuarioLogado = obterUsuarioLogado();
 
 /*
-  Se por algum motivo não existir usuário logado,
-  enviamos para login.
+  Conferência de segurança para evitar erro silencioso.
+
+  Se algum ID estiver diferente no HTML, mostramos no console.
 */
-if (!usuarioLogado) {
-  window.location.href = "./login.html";
+function conferirElementosPainel() {
+  const elementos = {
+    boasVindas,
+    dadosUsuario,
+    mensagem,
+    btnMostrarEdicao,
+    btnMostrarSenha,
+    btnCancelarPerfil,
+    btnCancelarSenha,
+    btnSair,
+    formPerfil,
+    formSenha,
+    areaEdicaoPerfil,
+    areaAlterarSenha,
+    linkAdminPainel,
+  };
+
+  const elementosFaltando = Object.entries(elementos)
+    .filter(([, elemento]) => !elemento)
+    .map(([nome]) => nome);
+
+  if (elementosFaltando.length > 0) {
+    console.error("Elementos não encontrados no painel:", elementosFaltando);
+
+    return false;
+  }
+
+  return true;
 }
 
 /*
@@ -131,47 +158,33 @@ function mostrarFormularioSenha() {
 }
 
 /*
-  Botão para abrir edição de perfil.
-*/
-btnMostrarEdicao.addEventListener("click", () => {
-  mostrarFormularioPerfil();
-});
-
-/*
-  Botão para abrir alteração de senha.
-*/
-btnMostrarSenha.addEventListener("click", () => {
-  mostrarFormularioSenha();
-});
-
-/*
   Cancela a edição do perfil.
 */
-btnCancelarPerfil.addEventListener("click", () => {
+function cancelarPerfil() {
   areaEdicaoPerfil.classList.add("escondido");
 
   formPerfil.reset();
 
   mensagem.textContent = "Edição cancelada.";
   mensagem.className = "mensagem";
-});
+}
 
 /*
   Cancela a alteração de senha.
 */
-btnCancelarSenha.addEventListener("click", () => {
+function cancelarSenha() {
   areaAlterarSenha.classList.add("escondido");
 
   formSenha.reset();
 
   mensagem.textContent = "Alteração de senha cancelada.";
   mensagem.className = "mensagem";
-});
+}
 
 /*
   Envia a atualização dos próprios dados para o backend.
 */
-formPerfil.addEventListener("submit", async (evento) => {
+async function salvarPerfil(evento) {
   evento.preventDefault();
 
   const dadosAtualizados = {
@@ -223,12 +236,12 @@ formPerfil.addEventListener("submit", async (evento) => {
     mensagem.textContent = "Erro ao conectar com o servidor.";
     mensagem.className = "mensagem erro";
   }
-});
+}
 
 /*
   Envia a alteração de senha para o backend.
 */
-formSenha.addEventListener("submit", async (evento) => {
+async function salvarSenha(evento) {
   evento.preventDefault();
 
   const dadosSenha = {
@@ -268,14 +281,7 @@ formSenha.addEventListener("submit", async (evento) => {
     mensagem.textContent = "Erro ao conectar com o servidor.";
     mensagem.className = "mensagem erro";
   }
-});
-
-/*
-  Evento do botão sair.
-*/
-btnSair.addEventListener("click", () => {
-  sairDoSistema();
-});
+}
 
 /*
   Função para formatar a data no padrão brasileiro.
@@ -290,5 +296,32 @@ function formatarData(dataRecebida) {
   return data.toLocaleString("pt-BR");
 }
 
-// Renderiza o painel assim que a página abre.
-renderizarPainel();
+/*
+  Inicializa os eventos da página.
+*/
+function inicializarPainel() {
+  if (!usuarioLogado) {
+    window.location.href = "./login.html";
+    return;
+  }
+
+  if (!conferirElementosPainel()) {
+    return;
+  }
+
+  btnMostrarEdicao.addEventListener("click", mostrarFormularioPerfil);
+  btnMostrarSenha.addEventListener("click", mostrarFormularioSenha);
+  btnCancelarPerfil.addEventListener("click", cancelarPerfil);
+  btnCancelarSenha.addEventListener("click", cancelarSenha);
+  formPerfil.addEventListener("submit", salvarPerfil);
+  formSenha.addEventListener("submit", salvarSenha);
+
+  btnSair.addEventListener("click", () => {
+    sairDoSistema();
+  });
+
+  renderizarPainel();
+}
+
+// Inicializa o painel assim que o arquivo é carregado.
+inicializarPainel();

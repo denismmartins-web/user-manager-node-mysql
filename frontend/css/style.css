@@ -486,3 +486,47 @@ button:hover {
     width: 100%;
   }
 }
+
+/* Campo de senha com botão de mostrar/esconder */
+.campo-senha {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Input dentro do campo de senha */
+.campo-senha input {
+  width: 100%;
+  padding-right: 56px;
+}
+
+/* Botão do olho */
+.btn-toggle-senha {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: 0;
+  padding: 0;
+  transform: translateY(-50%);
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  color: #e5e7eb;
+  font-size: 17px;
+  box-shadow: none;
+}
+
+/* Hover específico do botão de senha */
+.btn-toggle-senha:hover {
+  transform: translateY(-50%);
+  background: rgba(51, 65, 85, 0.95);
+  box-shadow: none;
+}
+
+/* Evita que o botão de olho fique com largura total em layouts responsivos */
+.acoes .btn-toggle-senha,
+.acoes-form .btn-toggle-senha {
+  width: 40px;
+}
