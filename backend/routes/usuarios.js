@@ -217,6 +217,121 @@ router.put("/:id", async (req, res) => {
 });
 
 /*
+  ROTA PUT /api/usuarios/:id/senha
+
+  Objetivo:
+  Permitir que um usuário altere a própria senha.
+
+  Segurança básica aplicada:
+  - valida ID
+  - verifica se o usuário existe
+  - compara a senha atual com bcrypt
+  - valida tamanho mínimo da nova senha
+  - criptografa a nova senha antes de salvar
+*/
+router.put("/:id/senha", async (req, res) => {
+  try {
+    // Pega o ID enviado pela URL.
+    const { id } = req.params;
+
+    // Converte o ID para número.
+    const idUsuario = Number(id);
+
+    // Valida se o ID é um número inteiro positivo.
+    if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
+      return res.status(400).json({
+        mensagem: "ID de usuário inválido.",
+      });
+    }
+
+    // Pega os dados enviados pelo frontend.
+    let { senha_atual, nova_senha, confirmar_senha } = req.body;
+
+    // Garante que os campos tenham valor em texto.
+    senha_atual = senha_atual ? senha_atual.trim() : "";
+    nova_senha = nova_senha ? nova_senha.trim() : "";
+    confirmar_senha = confirmar_senha ? confirmar_senha.trim() : "";
+
+    // Valida campos obrigatórios.
+    if (!senha_atual || !nova_senha || !confirmar_senha) {
+      return res.status(400).json({
+        mensagem: "Senha atual, nova senha e confirmação são obrigatórias.",
+      });
+    }
+
+    // Valida tamanho mínimo da nova senha.
+    if (nova_senha.length < 6) {
+      return res.status(400).json({
+        mensagem: "A nova senha deve ter pelo menos 6 caracteres.",
+      });
+    }
+
+    // Confere se a nova senha e a confirmação são iguais.
+    if (nova_senha !== confirmar_senha) {
+      return res.status(400).json({
+        mensagem: "A nova senha e a confirmação não conferem.",
+      });
+    }
+
+    // Busca o usuário no banco, incluindo a senha criptografada.
+    const [usuarios] = await pool.query(
+      `
+      SELECT 
+        id_usuario,
+        senha
+      FROM usuarios
+      WHERE id_usuario = ?
+      `,
+      [idUsuario]
+    );
+
+    // Se não encontrou usuário, retorna erro.
+    if (usuarios.length === 0) {
+      return res.status(404).json({
+        mensagem: "Usuário não encontrado.",
+      });
+    }
+
+    // Pega o usuário encontrado.
+    const usuario = usuarios[0];
+
+    // Compara a senha atual digitada com a senha criptografada no banco.
+    const senhaAtualCorreta = await bcrypt.compare(senha_atual, usuario.senha);
+
+    // Se a senha atual estiver errada, bloqueia a alteração.
+    if (!senhaAtualCorreta) {
+      return res.status(401).json({
+        mensagem: "Senha atual incorreta.",
+      });
+    }
+
+    // Criptografa a nova senha.
+    const novaSenhaCriptografada = await bcrypt.hash(nova_senha, 10);
+
+    // Atualiza a senha no banco.
+    await pool.query(
+      `
+      UPDATE usuarios
+      SET senha = ?
+      WHERE id_usuario = ?
+      `,
+      [novaSenhaCriptografada, idUsuario]
+    );
+
+    // Retorna sucesso.
+    res.json({
+      mensagem: "Senha alterada com sucesso!",
+    });
+  } catch (erro) {
+    console.error("Erro ao alterar senha:", erro);
+
+    res.status(500).json({
+      mensagem: "Erro interno ao alterar senha.",
+    });
+  }
+});
+
+/*
   ROTA DELETE /api/usuarios/:id
 
   Objetivo:
