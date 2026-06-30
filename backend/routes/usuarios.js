@@ -405,5 +405,98 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+/*
+  ROTA PUT /api/usuarios/:id/senha
+
+  Objetivo:
+  Permitir que um usuário altere a própria senha.
+*/
+router.put("/:id/senha", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const idUsuario = Number(id);
+
+    if (!Number.isInteger(idUsuario) || idUsuario <= 0) {
+      return res.status(400).json({
+        mensagem: "ID de usuário inválido.",
+      });
+    }
+
+    let { senha_atual, nova_senha, confirmar_senha } = req.body;
+
+    senha_atual = senha_atual ? senha_atual.trim() : "";
+    nova_senha = nova_senha ? nova_senha.trim() : "";
+    confirmar_senha = confirmar_senha ? confirmar_senha.trim() : "";
+
+    if (!senha_atual || !nova_senha || !confirmar_senha) {
+      return res.status(400).json({
+        mensagem: "Senha atual, nova senha e confirmação são obrigatórias.",
+      });
+    }
+
+    if (nova_senha.length < 6) {
+      return res.status(400).json({
+        mensagem: "A nova senha deve ter pelo menos 6 caracteres.",
+      });
+    }
+
+    if (nova_senha !== confirmar_senha) {
+      return res.status(400).json({
+        mensagem: "A nova senha e a confirmação não conferem.",
+      });
+    }
+
+    const [usuarios] = await pool.query(
+      `
+      SELECT 
+        id_usuario,
+        senha
+      FROM usuarios
+      WHERE id_usuario = ?
+      `,
+      [idUsuario]
+    );
+
+    if (usuarios.length === 0) {
+      return res.status(404).json({
+        mensagem: "Usuário não encontrado.",
+      });
+    }
+
+    const usuario = usuarios[0];
+
+    const senhaAtualCorreta = await bcrypt.compare(senha_atual, usuario.senha);
+
+    if (!senhaAtualCorreta) {
+      return res.status(401).json({
+        mensagem: "Senha atual incorreta.",
+      });
+    }
+
+    const novaSenhaCriptografada = await bcrypt.hash(nova_senha, 10);
+
+    await pool.query(
+      `
+      UPDATE usuarios
+      SET senha = ?
+      WHERE id_usuario = ?
+      `,
+      [novaSenhaCriptografada, idUsuario]
+    );
+
+    res.json({
+      mensagem: "Senha alterada com sucesso!",
+    });
+  } catch (erro) {
+    console.error("Erro ao alterar senha:", erro);
+
+    res.status(500).json({
+      mensagem: "Erro interno ao alterar senha.",
+    });
+  }
+});
+
+
 // Exporta as rotas para serem usadas no server.js.
 module.exports = router;
